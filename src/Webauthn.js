@@ -281,6 +281,7 @@ class Webauthn {
   authenticate (options = {}) {
     const {
       failureRedirect,
+      noResponse,
       usernameField = this.config.usernameField,
     } = options
 
@@ -292,6 +293,8 @@ class Webauthn {
       const fail = () => {
         if (failureRedirect) {
           return res.redirect(failureRedirect)
+        } else if (noResponse) {
+          next();
         } else {
           return res.status(401).json({
             status: 'failed',
